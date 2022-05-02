@@ -181,18 +181,22 @@ cd annovar
 
 ##ANNOTATING VARIANTS THROUGH SNPEFF
 #Download latest version
-#wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip
+wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip
 
 #Unzip file
-#unzip snpEff_latest_core.zip
+unzip snpEff_latest_core.zip
 
-#sudo add-apt-repository ppa:openjdk-r/ppa
-#sudo apt-get update
-#sudo apt install openjdk-11-jdk
+sudo add-apt-repository ppa:openjdk-r/ppa
+sudo apt-get update
+sudo apt install openjdk-11-jdk
 
-#java -jar snpEff.jar download GRCh38.76
-#java -Xmx8g -jar snpEff.jar GRCh38.76 ~/ngs_pipeline/dnaseq/results/NGS0001_filtered_R.vcf.gz ~/ngs_pipeline/dnaseq/results/NGS0001_filtered_annotated.ann.vcf 
+java -jar snpEff.jar download GRCh38.76
+java -Xmx8g -jar snpEff.jar GRCh38.76 ~/ngs_pipeline/dnaseq/results/NGS0001_filtered_R.vcf.gz ~/ngs_pipeline/dnaseq/results/NGS0001_filtered_annotated.ann.vcf 
 
 ##VARIANT PRIORITISATION
-#cd ~/ngs_pipeline/dnaseq/results
+cd ~/ngs_pipeline/dnaseq/results
+sudo apt-get install vcftools
+
+vcftools --gzvcf NGS0001_filtered_R.vcf.gz --keep-only-indels NGS0001_filtered_exons
+
 
