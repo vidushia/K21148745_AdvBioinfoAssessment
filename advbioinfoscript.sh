@@ -180,6 +180,7 @@ cd annovar
 ./table_annovar.pl ~/ngs_pipeline/dnaseq/results/NGS0001_filtered_annotated.avinput humandb/ -buildver hg19 -out ~/ngs_pipeline/dnaseq/results/NGS0001_filtered_annotated -remove -protocol refGene,ensGene,clinvar_20180603,exac03,dbnsfp31a_interpro -operation g,g,f,f,f -otherinfo -nastring . -csvout
 
 ##ANNOTATING VARIANTS THROUGH SNPEFF
+conda deactivate
 #Download latest version
 wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip
 
@@ -189,14 +190,10 @@ unzip snpEff_latest_core.zip
 sudo add-apt-repository ppa:openjdk-r/ppa
 sudo apt-get update
 sudo apt install openjdk-11-jdk
-
-java -jar snpEff.jar download GRCh38.76
-java -Xmx8g -jar snpEff.jar GRCh38.76 ~/ngs_pipeline/dnaseq/results/NGS0001_filtered_R.vcf.gz ~/ngs_pipeline/dnaseq/results/NGS0001_filtered_annotated.ann.vcf 
-
-##VARIANT PRIORITISATION
-cd ~/ngs_pipeline/dnaseq/results
-sudo apt-get install vcftools
-
-vcftools --gzvcf NGS0001_filtered_R.vcf.gz --keep-only-indels NGS0001_filtered_exons
+mv ~/ngs_pipeline/dnaseq/results/NGS0001_filtered.vcf ~/snpEff
+mv ~/ngs_pipeline/dnaseq/data/annotation.bed ~/snpEff
+cd ~/snpEff
+java -Xmx8g -jar snpEff.jar databases | grep GRCh38
+java -Xmx8g -jar snpEff.jar -fi annotation.bed GRCh38.105 NGS0001_filtered.vcf > NGS0001_filtered_annotated.vcf
 
 
